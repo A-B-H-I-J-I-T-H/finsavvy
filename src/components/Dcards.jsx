@@ -6,7 +6,7 @@ import "../styles/Dcards.css";
 
 const Dcards = () => {
   const [number, SetNumber] = useState("");
-  const [name, SetName] = useState("");
+  const [name, SetName] = useState("govind");
   const [date, SetDate] = useState("");
   const [cvc, SetCvc] = useState("");
   const [focus, SetFocus] = useState("");

@@ -9,16 +9,17 @@
   .front {
     position: relative;
     transform: rotateY(0deg);
-    background-color: red;
+    background-color: #c7ffa5;
   }
   .back {
     position: relative;
     transform: rotateY(180deg);
-    background-color: yellow;
+    background-color: #c7ffa5;
   }
   .rccs__card {
-    height: 150px;
-    max-width: 200px;
+    font-size: xx-small;
+    height: 100px;
+    max-width: 190px;
     margin-top: 10;
     margin-bottom: 10;
     position: relative;
@@ -27,24 +28,26 @@
     -webkit-transition: all 0.4s linear;
     transition: all 0.4s linear;
     width: 290px;
-  
     /* background: linear-gradient(
      25deg
   , #986, #234); */
   }
-  
+  .rccs__card rccs__card--unknown {
+    border-radius: 100px;
+
+  }
   .front1 {
     display: flex;
     margin-top: 30px;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: red;
+    background-color: #c7ffa5;
   }
   
   .back1 {
     transform: rotateY(360deg);
     margin-bottom: 30px !important;
-    background-color: yellow;
+    background-color: #c7ffa5;
   }
   .App-cards-list {
     display: flex;
@@ -79,7 +82,9 @@
   rccs-animate-background: true; */
   
   .rccs__card--unknown > div {
-    background-image: url(../assets/6.jpeg);
+    background-color: #c7ffa5;
     max-width: 100%;
+    border-radius: 10px;
+
   }
   
