@@ -2,8 +2,7 @@
  * {
     margin: 0;
     padding: 0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+   
 }
 .rrr
 {
@@ -13,44 +12,49 @@ align-items: center;
 min-height: 100vh;
 background-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255));
 padding: 30px;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
 
 .box{
 position: relative;
-width: 345px;
-height: 448px;
+width: 35%;
+height: 80%;
 background: #00024C;
 border-radius: 17px;
 overflow: hidden;
 left: 55px;
 top: 5px;
+padding:6px;
 }
 
-.box form {
-position: absolute;
-background: #ffffff;
-inset: 6px;
-border-radius: 10px;
-padding: 40px 40px;
-z-index: 2;
-display: flex;
-flex-direction: column;
+.Login_form{
+    position: relative;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 40px 40px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+  
 }
-.box form h1{
+.Login_h1{
 color:rgb(10, 16, 28);
-font-weight:600px;
+font-weight:600;
 text-align:center;
 letter-spacing: 0.03em;
+margin-bottom: 0rem;
 
 }
-.box form .inputbox
+.inputbox
 {
 position:relative;
 width:100%;
 margin-top:35px;
 
 }
-.box form .inputbox input
+.inputbox input
 {
 position:relative;
 width:100%;
@@ -65,7 +69,7 @@ letter-spacing: 0.05em;
 transition:.5s;
 z-index:10;
 }
-.box form .inputbox span
+.inputbox span
 {
 position: absolute;
 left: 0px;
@@ -78,8 +82,8 @@ transition: all 0.5s ease 0s;
 
 
 }
-.box form .inputbox input:valid ~ span,
-.box form .inputbox input:focus ~ span
+.inputbox input:valid ~ span,
+.inputbox input:focus ~ span
 {
 color:rgb(0, 0, 0);
 font-size:0.80em;
@@ -87,7 +91,7 @@ transform:translateY(-34px);
 
 
 }
-.box form .inputbox p
+.Login_p
 {
 position:absolute;
 left:0;
@@ -99,15 +103,16 @@ border-radius:4px;
 overflow:hidden;
 transition:0.5s;
 pointer-events:none;
+margin-bottom:0px;
 
 }
-.box form .inputbox input:valid ~ p,
-.box form .inputbox input:focus ~ p
+.inputbox input:valid ~ p,
+.inputbox input:focus ~ p
 {
 height: 2px;
 }
 
-.box form .inputbox #togglepassword {
+.inputbox #togglepassword {
 position: absolute;
 
 right: 9px;
@@ -117,12 +122,12 @@ z-index: 1;
 
 
 
-.box form .links
+ .links
 {
 display:flex;
 justify-content: space-between;
 }
-.box form .links a
+.links a
 {
 margin:10px 0;
 font-size:0.8em;
@@ -131,8 +136,8 @@ text-decoration: none;
 
 
 }
-.box form .links a:hover,
-.box form .links a:nth-child(2)
+.links a:hover,
+.links a:nth-child(2)
 {
 color:#68799b;
 
@@ -154,24 +159,24 @@ cursor: pointer;
 {
 opacity:0.8;
 }
-.box form .acc
+.acc
 {
 display: flex;
 justify-content: flex-start;
 padding-top: 17px;
 
 }
-.box form .acc p{
+.acc p{
 text-decoration: none;
 padding-top:5px;
 font-size: .75em;
 }
-.box form .acc a{
+.acc a{
 text-decoration: none;
 padding-top:5px;
 font-size: .75em;
 }
-.box form .acc a:hover
+.acc a:hover
 {
 color:#68799b;
 }
@@ -184,8 +189,8 @@ top:78PX;
 }
 .caption {
     position: relative;
-    left: 510px;
-    bottom: 36px;
+    left: 103px;
+    bottom: -196px;
 }
 .caption p {
 font-size: 1.2em;

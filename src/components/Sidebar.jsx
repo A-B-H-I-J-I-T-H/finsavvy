@@ -1,5 +1,6 @@
 import React from 'react'
 import {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsListCheck, BsMenuButtonWideFill, BsFillGearFill} from 'react-icons/bs'
+import { Link } from "react-router-dom";
 
 function Sidebar({openSidebarToggle, OpenSidebar}) {
   return (
@@ -13,16 +14,16 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
   */}
         <ul className='sidebar-list'>
             <li className='sidebar-list-item'>
-                <a href="">
+            <Link to="App">
                     <BsGrid1X2Fill className='icon'/>
-                </a>
+            </Link>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
+                <Link to="TransactionPage">
                     <BsFillArchiveFill className='icon'/>
-                </a>
+                </Link>
             </li>
-            <li className='sidebar-list-item'>
+           {/* <li className='sidebar-list-item'>
                 <a href="">
                     <BsFillGrid3X3GapFill className='icon'/>
                 </a>
@@ -36,7 +37,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 <a href="">
                     <BsListCheck className='icon'/>
                 </a>
-            </li>
+</li>*/}
         </ul>
     </aside>
   )

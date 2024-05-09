@@ -15,7 +15,7 @@ import axios from "axios";
 import {usePlaidLink} from "react-plaid-link";
 // import './App.css'
 
-axios.defaults.baseURL ="http://localhost:8000"
+axios.defaults.baseURL ="http://localhost:3000"
 
 function PlaidAuth({publicToken}) {
   const [account, setAccount] = useState();
@@ -113,14 +113,11 @@ function Home() {
   ];
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF0000'];
   const barColors = ["#82ca9d","#8884d8"];
-  const total = 100000;
-
+  let income = 1, expense = 1;
   const [selectedSector, setSelectedSector] = useState(1);
   const [hoveredSector, setHoveredSector] = useState(null);
 
-  const handlePieClick = (entry) => {
-    setSelectedSector(entry.sectorId);
-  };
+ 
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_, index) => {
@@ -190,6 +187,123 @@ function Home() {
       // send public_token to server
     },
   });
+ 
+  const [monthlyData, setMonthlyData] = useState(null);
+  useEffect(() => {
+    const fetchMonthlyData = async () => {
+      try {
+        const id = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+
+        if (id && token) {
+          const url = `http://localhost:3000/api/${id}/monthly`;
+          const response = await fetch(url, {
+            headers: {
+              Authorization: token
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch monthly data');
+          }
+          const data = await response.json();
+          setMonthlyData(data);
+          income = data.income;
+
+        } else {
+          console.error('User ID or token not found in localStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching monthly data:', error);
+      }
+    };
+
+    fetchMonthlyData();
+  }, []);
+
+  const [barChartData, setBarChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchBarData = async () => {
+      const id = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    
+    if (barChartData.length > 0) {
+      return;
+    }
+
+    if (!id || !token) {
+      console.error('User ID or token not found in localStorage');
+      return;
+    }
+      try {
+        const response = await axios.get(`/api/${id}/analyzer?category=Transportation`, {
+          headers: {
+            Authorization: `${token}`
+          }
+        });
+    
+        const responseData = response.data.data;
+    
+        const newChartData = Object.entries(responseData).map(([date, value]) => ({
+          name: date,
+          value: value
+        }));
+    
+        if (newChartData.length > 0) {
+          setBarChartData(newChartData);
+        } else {
+          console.warn('No valid data fetched for bar chart');
+        }
+      } catch (error) {
+        console.error('Error fetching analyzer data:', error);
+      }
+    }
+    fetchBarData();
+  })
+
+  const handlePieClick = async (entry) => {
+    const searchTerm = entry.category;
+    const encodedTerm = encodeURIComponent(searchTerm);
+    const id = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+  
+    if (!id || !token) {
+      console.error('User ID or token not found in localStorage');
+      return;
+    }
+  
+    try {
+      const response = await axios.get(`/api/${id}/analyzer?category=${encodedTerm}`, {
+        headers: {
+          Authorization: `${token}`
+        }
+      });
+  
+      const responseData = response.data.data;
+  
+      const newChartData = Object.entries(responseData).map(([date, value]) => ({
+        name: date,
+        value: value
+      }));
+  
+      if (newChartData.length > 0) {
+        setBarChartData(newChartData);
+      } else {
+        console.warn('No valid data fetched for bar chart');
+      }
+    } catch (error) {
+      console.error('Error fetching analyzer data:', error);
+    }
+  };
+  
+  const formatXAxisTick = (dateString) => {
+    const date = new Date(dateString);
+    const monthName = date.toLocaleString('default', { month: 'short' }); // Get full month name
+    return monthName.slice(0, 3); // Return first three letters of the month name
+  };
+  
+  
 
 
   return (
@@ -212,92 +326,90 @@ function Home() {
           <Dcards />
         {publicToken ? (<PlaidAuth publicToken={publicToken} />) : (
       <button onClick={() => open()} disabled={!ready}>
-        bank account
+        Add Bank Account
       </button>)}
         </div>
+       {monthlyData && (
         <div className="cash">
           <div className="income">
             <div className='isign'>&#8601;</div>
-            <p>Total Income <br /> $632.000</p>
+            <p>Total Income <br /> ${monthlyData.income}</p>
             <div className='iflow'>+ 1.29%</div>
           </div>
           <div className="outcome">
             <div className='osign'>&#8599;</div>
-            <p>Total Outcome <br /> $632.000</p>
+            <p>Total Outcome <br /> ${monthlyData.expense}</p>
             <div className='oflow'>- 1.29%</div>
           </div>
         </div>
+       )}
         <DataTable data={tableData} />
+        {barChartData.length > 0 ? (
+  <ResponsiveContainer width='100%' height={300} className='bar'>
+    <BarChart
+      width={500}
+      height={300}
+      data={barChartData}
+      margin={{ top: 50, right: 30, left: 0, bottom: 5 }}
+      barCategoryGap={20}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" tickFormatter={formatXAxisTick} />
+      <YAxis />
+      <Tooltip />
+      <Bar dataKey="value" fill="#8884d8" radius={[30, 30, 0, 0]}>
+        {barChartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#82ca9d' : '#8884d8'} />
+          ))}
+      </Bar>
+    </BarChart>
+  </ResponsiveContainer>
+) : (
+  <p>No data available for bar chart</p>
+)}
 
-              <ResponsiveContainer width='100%' height={300} className='bar'>
-                <BarChart
-                  width={500}
-                  height={300}
-                  data={data}
-                  margin={{
-                    top: 50,
-                    right: 30,
-                    left: 0,
-                    bottom: 5,
-                  }}
-                  barCategoryGap={20}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(value) => `${value / 1000}k`} />
-                  <Tooltip />
-                  <Bar dataKey="amt" radius={[30, 30, 0, 0]}>
-                    {
-                      data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#82ca9d' : '#8884d8'} />
-                      ))
-                    }
-                  </Bar>
-                </BarChart>
-
-              </ResponsiveContainer>
-            
-            <ResponsiveContainer width="100%" height={300} className='pie'>
+              {monthlyData && (
+          <ResponsiveContainer width='100%' height={300} className='pie'>
               <PieChart width={500} height={300}>
-                <Tooltip />
-                <Legend />
-                <Pie
-                  data={dataPieChart}
-                  dataKey='value'
-                  nameKey='name'
-                  cx='50%'
-                  cy='50%'
-                  outerRadius={100}
-                  innerRadius={70}
-                  fill='#8884d8'
-                  onClick={handlePieClick}
-                  activeIndex={activeIndex}
-                  activeShape={renderActiveShape}
-                >
-                      <Label
+              <Tooltip />
+              <Legend />
+              <Pie
+                data={Object.entries(monthlyData.classes).map(([category, amount]) => ({
+                  category,
+                  amount
+                }))}
+                dataKey="amount"
+                nameKey="category"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                innerRadius={70}
+                fill="#8884d8"
+                onClick={handlePieClick}
+                activeIndex={activeIndex}
+                activeShape={renderActiveShape}
+              >
+                <Label
                         content={() => (
-                          <text x="50%" y="50%" fill="#000" textAnchor="middle" fontSize={15}>
+                          <text x="50%" y="45%" fill="#000" textAnchor="middle" fontSize={15}>
                             <tspan x="50%" dy="-0.7em">Total Balance</tspan>
-                            <tspan x="50%" dy="1.4em" fontWeight={900}>${total - dataPieChart.reduce((acc, cur) => acc + cur.value, 0)}</tspan>
+                            <tspan x="50%" dy="1.4em" fontWeight={900}>${monthlyData.income - monthlyData.expense}</tspan>
                           </text>
                         )}
                       />
-
-                  {dataPieChart.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                      stroke={selectedSector === entry.sectorId ? 'none' : 'white'}
-                      strokeWidth={selectedSector === entry.sectorId ? 0 : 1}
-                      onMouseEnter={() => {
-                        onPieEnter();
-                      }}
-                      onMouseLeave={() => setHoveredSector(null)}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+                {Object.entries(monthlyData.classes).map(([category], index) => (
+                  <Cell key={category} fill={COLORS[index % COLORS.length]}  stroke={selectedSector === index ? 'none' : 'white'}
+                  strokeWidth={selectedSector === index ? 0 : 1}
+                  onMouseEnter={() => {
+                    onPieEnter();
+                  }}
+                  onMouseLeave={() => setHoveredSector(null)}/>
+                ))}
+              </Pie>
+              
+            </PieChart>
+          </ResponsiveContainer>
+      )}
             <StockChart data={productData} />
 
         

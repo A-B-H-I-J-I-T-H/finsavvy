@@ -148,8 +148,17 @@ body {
   border-radius: 10px;
 }
 
+.carousel-container h5{
+  font-size:medium;
+}
+
+.carousel-container h6{
+  font-size:small;
+}
 .calendar {
   grid-area: calendar;
+  border: none;
+  border-radius: 10px;
 }
 
 .transaction {
@@ -198,6 +207,7 @@ body {
 .bar {
   grid-area: bar;
   padding-left: -100px;
+  color: black;
 }
 
 .pie {
@@ -212,22 +222,37 @@ body {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 10px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .creditCards button {
   background-color: blueviolet;
   color: white;
   border-radius: 5px;
+  border: none;
+  width: 80%;
+  min-height: 10%;
+}
+
+.creditCards h6 {
+  align-self: start;
 }
 
 .cash {
   color: black;
   grid-area: cash;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: large;
 }
 
 .iflow {
   background-color: greenyellow;
-  color: green;
+  color: green;  
 }
 
 .oflow {
@@ -243,11 +268,13 @@ body {
   align-items: center;
   padding: 10px;
   border-radius: 10px;
+  height: 30%;
 }
 
 .iflow,
 .oflow{
-  font-size: xx-small;
+  border-radius: 20px;
+  padding: 5px;
 }
 
 .isign,
@@ -260,7 +287,6 @@ body {
 }
 
 .outcome {
-  margin-top: 50px;
 }
 
 .isign {
@@ -274,7 +300,7 @@ body {
 }
 
 .cash  p {
-  align-self: self-end;
+  align-self: center;
   margin: 0px;
 }
 

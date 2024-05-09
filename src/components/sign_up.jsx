@@ -8,9 +8,8 @@ function SignUpPage() {
                 <img src="src\assets\Sign up-cuate (1).png" alt="Sign Up" width="400" height="400" />
             </div>
             <div className="box1">
-                <span className="borderLine1"></span>
-                <form>
-                    <h1>Sign up</h1>
+                <form className="Signup_form">
+                    <h1 className="Signup_h1">Sign up</h1>
                     <div className="inputbox1">
                         <input type="text" required="required" />
                         <span>Username</span>
